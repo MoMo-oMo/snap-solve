@@ -1,0 +1,170 @@
+/* ── Light theme (default) ──────────────────────────────────────────── */
+:root {
+  color-scheme: light;
+
+  /* Crimson primary */
+  --ion-color-primary: #D42E3D;
+  --ion-color-primary-rgb: 212, 46, 61;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #b52532;
+  --ion-color-primary-tint: rgba(212, 46, 61, 0.09);
+  --ion-color-primary-border: rgba(212, 46, 61, 0.22);
+
+  /* Charcoal secondary */
+  --ion-color-secondary: #46454A;
+  --ion-color-secondary-rgb: 70, 69, 74;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-shade: #333237;
+  --ion-color-secondary-tint: rgba(70, 69, 74, 0.06);
+
+  /* Status */
+  --ion-color-success: #15803D;
+  --ion-color-success-rgb: 21, 128, 61;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-shade: #126b33;
+  --ion-color-success-tint: rgba(21, 128, 61, 0.08);
+  --ion-color-success-border: rgba(21, 128, 61, 0.22);
+
+  --ion-color-danger: #DC2626;
+  --ion-color-danger-rgb: 220, 38, 38;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-shade: #b91c1c;
+  --ion-color-danger-tint: rgba(220, 38, 38, 0.08);
+  --ion-color-danger-border: rgba(220, 38, 38, 0.22);
+
+  --ion-color-warning: #B45309;
+  --ion-color-warning-rgb: 180, 83, 9;
+  --ion-color-warning-contrast: #ffffff;
+
+  --ion-color-medium: #7A7980;
+  --ion-color-medium-rgb: 122, 121, 128;
+
+  /* Backgrounds */
+  --ion-background-color: #ffffff;
+  --ion-background-color-rgb: 255, 255, 255;
+  --app-gradient: linear-gradient(180deg, #fffafa 0%, #ffffff 100%);
+
+  /* Text */
+  --ion-text-color: #1C1C1F;
+  --ion-text-color-rgb: 28, 28, 31;
+
+  /* Dividers / steps */
+  --ion-color-step-50: rgba(0, 0, 0, 0.04);
+  --ion-color-step-100: rgba(0, 0, 0, 0.07);
+  --ion-color-step-200: rgba(212, 46, 61, 0.06);
+
+  /* Cards & items */
+  --ion-card-background: #ffffff;
+  --ion-item-background: transparent;
+
+  /* Toolbar */
+  --ion-toolbar-background: rgba(255, 255, 255, 0.85);
+  --ion-toolbar-color: #1C1C1F;
+  --ion-toolbar-border-color: rgba(0, 0, 0, 0.06);
+  --toolbar-glass-bg: rgba(255, 255, 255, 0.8);
+
+  /* Card tokens — flat, solid, soft shadow (native-app style, not heavy glass) */
+  --glass-bg: #ffffff;
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-blur: none;
+  --glass-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 6px 16px rgba(0, 0, 0, 0.06);
+  --glass-radius: 18px;
+
+  /* Input fields */
+  --input-bg: rgba(0, 0, 0, 0.03);
+  --input-border: rgba(0, 0, 0, 0.1);
+  --input-border-focus: rgba(212, 46, 61, 0.45);
+
+  /* Subtle accent surfaces */
+  --surface-tint: rgba(212, 46, 61, 0.06);
+}
+
+/* ── Dark theme ──────────────────────────────────────────────────────── */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --ion-color-primary: #FF4D5E;
+  --ion-color-primary-rgb: 255, 77, 94;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #e0384a;
+  --ion-color-primary-tint: rgba(255, 77, 94, 0.14);
+  --ion-color-primary-border: rgba(255, 77, 94, 0.3);
+
+  --ion-color-secondary: #C9C8CD;
+  --ion-color-secondary-rgb: 201, 200, 205;
+  --ion-color-secondary-contrast: #0e0e10;
+  --ion-color-secondary-shade: #a9a8ac;
+  --ion-color-secondary-tint: rgba(201, 200, 205, 0.1);
+
+  --ion-color-success: #34D399;
+  --ion-color-success-rgb: 52, 211, 153;
+  --ion-color-success-contrast: #0e0e10;
+  --ion-color-success-shade: #2dba88;
+  --ion-color-success-tint: rgba(52, 211, 153, 0.12);
+  --ion-color-success-border: rgba(52, 211, 153, 0.28);
+
+  --ion-color-danger: #FF6B5F;
+  --ion-color-danger-rgb: 255, 107, 95;
+  --ion-color-danger-contrast: #0e0e10;
+  --ion-color-danger-shade: #d95a4f;
+  --ion-color-danger-tint: rgba(255, 107, 95, 0.12);
+  --ion-color-danger-border: rgba(255, 107, 95, 0.28);
+
+  --ion-color-warning: #FBBF24;
+  --ion-color-warning-rgb: 251, 191, 36;
+  --ion-color-warning-contrast: #0e0e10;
+
+  --ion-color-medium: #9B999F;
+  --ion-color-medium-rgb: 155, 153, 159;
+
+  --ion-background-color: #0c0c0e;
+  --ion-background-color-rgb: 12, 12, 14;
+  --app-gradient: linear-gradient(180deg, #0e0e11 0%, #0c0c0e 100%);
+
+  --ion-text-color: #F2F2F4;
+  --ion-text-color-rgb: 242, 242, 244;
+
+  --ion-color-step-50: rgba(255, 255, 255, 0.05);
+  --ion-color-step-100: rgba(255, 255, 255, 0.09);
+  --ion-color-step-200: rgba(255, 77, 94, 0.1);
+
+  --ion-card-background: #18181c;
+  --ion-item-background: transparent;
+
+  --ion-toolbar-background: rgba(12, 12, 14, 0.85);
+  --ion-toolbar-color: #F2F2F4;
+  --ion-toolbar-border-color: rgba(255, 255, 255, 0.08);
+  --toolbar-glass-bg: rgba(12, 12, 14, 0.8);
+
+  --glass-bg: #18181c;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: none;
+  --glass-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.4),
+    0 6px 18px rgba(0, 0, 0, 0.35);
+  --glass-radius: 18px;
+
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.12);
+  --input-border-focus: rgba(255, 77, 94, 0.5);
+
+  --surface-tint: rgba(255, 77, 94, 0.1);
+}
+
+* {
+  font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Reusable card utility — flat surface, soft shadow, no heavy blur */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: var(--glass-shadow);
+}

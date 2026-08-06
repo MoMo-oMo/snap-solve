@@ -1,0 +1,7 @@
+{
+  "name": "SnapSolve",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
