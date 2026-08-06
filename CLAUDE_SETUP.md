@@ -57,7 +57,5 @@ npx cap sync android
 
 `data/` and the Python scripts under `scripts/` (`build_questions_json.py`,
 `ocr_textbook.py`, etc.) are offline tooling used to prepare textbook/question
-content; they are not part of the running app. `scripts/upload-to-firebase.js`
-uploads that data to a Firestore project, but nothing in the app currently
-reads from Firestore — treat it as an unused/legacy script unless a
-Firestore-backed content source is reintroduced.
+content; they are not part of the running app. Nothing in the app currently
+reads from Firestore or any other backend.
