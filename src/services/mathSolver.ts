@@ -14,19 +14,30 @@ export interface SolveResult {
 function normalize(input: string): string {
   return input
     .trim()
-    .replace(/×/g, '*')
+    // Multiplication / division symbol variants
+    .replace(/[×∗]/g, '*')
+    .replace(/[·⋅∙]/g, '*')
     .replace(/÷/g, '/')
-    .replace(/−/g, '-')
-    .replace(/–/g, '-')
-    .replace(/²/g, '^2')
-    .replace(/³/g, '^3')
-    .replace(/⁴/g, '^4')
-    .replace(/⁵/g, '^5')
+    // Minus sign variants (OCR/typography often produces these instead of a plain hyphen)
+    .replace(/[−–—]/g, '-')
+    // Superscript digits
+    .replace(/⁰/g, '^0').replace(/¹/g, '^1').replace(/²/g, '^2').replace(/³/g, '^3')
+    .replace(/⁴/g, '^4').replace(/⁵/g, '^5').replace(/⁶/g, '^6').replace(/⁷/g, '^7')
+    .replace(/⁸/g, '^8').replace(/⁹/g, '^9')
     .replace(/√/g, 'sqrt')
     .replace(/π/g, 'pi')
     .replace(/°/g, '')
+    // Other bracket styles used interchangeably with parentheses in textbooks/OCR
+    .replace(/[[{]/g, '(')
+    .replace(/[\]}]/g, ')')
+    // Collapse accidental doubled equals signs
+    .replace(/={2,}/g, '=')
     // Implicit multiplication: 3(x+2) → 3*(x+2)
     .replace(/(\d)\s*\(/g, '$1*(')
+    // Implicit multiplication: x(x+2) → x*(x+2) — safe because every real function
+    // name used here (sin, cos, sqrt, log, ...) is 2+ letters, so a single bare
+    // letter directly before "(" is always a variable, never a function call.
+    .replace(/\b([a-z])\(/gi, '$1*(')
     // Adjacent brackets: (2)(3) → (2)*(3)
     .replace(/\)\s*\(/g, ')*(');
 }
@@ -483,6 +494,17 @@ function solveLinear(norm: string, original: string): SolveResult {
     throw new Error('Could not extract a linear coefficient — may not be a linear equation.');
   }
 
+  // Verify the expression is genuinely linear (not e.g. a factored quadratic
+  // like "x(x+2)=0" that happens to have no literal "^2") by checking it
+  // extrapolates correctly to a third point. If not, bail out so the caller's
+  // fallback chain can retry with solveQuadratic instead of silently
+  // returning a wrong/partial answer.
+  const thirdPoint = math.evaluate(combined, { [variable]: -1 }) as number;
+  const predicted = -a + b;
+  if (Math.abs(thirdPoint - predicted) > 1e-6 * (1 + Math.abs(predicted))) {
+    throw new Error('Not a linear equation.');
+  }
+
   const answer = -b / a;
   if (!isFinite(answer)) throw new Error('The equation has no finite solution.');
 
@@ -593,7 +615,6 @@ function solveDerivative(norm: string, original: string): SolveResult {
     .replace(/derivative\s+of\s+/i, '')
     .replace(/differentiate\s+/i, '')
     .replace(/f'\([^)]*\)\s*=\s*/i, '')
-    .replace(/\[|\]/g, '')
     .trim();
 
   const noFns = cleaned.replace(/\b(sin|cos|tan|log|ln|sqrt|exp|pi|abs)\b/gi, '');

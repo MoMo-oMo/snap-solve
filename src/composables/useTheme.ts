@@ -7,9 +7,9 @@ const STORAGE_KEY = 'snapsolve-theme';
 function getInitialTheme(): Theme {
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored === 'light' || stored === 'dark') return stored;
-  const prefersDark = typeof window.matchMedia === 'function'
-    && window.matchMedia('(prefers-color-scheme: dark)').matches;
-  return prefersDark ? 'dark' : 'light';
+  // Default to light regardless of system preference — user can still
+  // toggle to dark manually, and that choice is remembered from then on.
+  return 'light';
 }
 
 const theme = ref<Theme>(getInitialTheme());

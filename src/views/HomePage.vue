@@ -67,6 +67,7 @@ function go(path: string) { router.push(path); }
 
 .content-wrapper {
   padding: 1.1rem 1.25rem 2.5rem;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 1.1rem);
   display: flex;
   flex-direction: column;
   min-height: 100%;
@@ -77,6 +78,7 @@ function go(path: string) { router.push(path); }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   margin-bottom: 1.75rem;
 }
 .brand {

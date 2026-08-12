@@ -34,20 +34,27 @@ interface SolveResult {
 
 const DEFAULT_MODEL = '@cf/meta/llama-3.2-11b-vision-instruct';
 
-const PROMPT = `You are a patient, precise math tutor. Read the math problem in the attached image — it may be printed, handwritten, low quality, or a diagram with labeled values (e.g. a triangle with side lengths marked). Figure out exactly what is being asked, including interpreting word problems and diagrams, then solve it completely and correctly.
+const PROMPT = `You are a patient, precise math tutor. The attached image is a photo taken by a student of ONE math problem they want solved — it may be printed, handwritten, low quality, or a diagram with labeled values (e.g. a triangle with side lengths marked).
+
+The photo may also contain things that are NOT the problem: a worksheet title, "Name/Date" fields, instructions like "show your work", other unrelated problems elsewhere on the page, page numbers, doodles. IGNORE all of that. Your job is to find the single actual math problem the student wants solved and solve ONLY that one.
+
+- If the image shows a numbered list of several distinct problems (e.g. "1) ... 2) ... 3) ..."), solve ONLY problem 1 and ignore the rest — do not merge them, do not list the others as steps.
+- "problem" must be an actual solvable math question or equation, transcribed as written — NEVER a title, heading, label, or instruction like "Chapter 4 Algebra Homework" or "Show your work below".
+- "steps" must be genuine mathematical working (calculations, algebraic manipulation, substitutions) that derives the answer — NEVER a restatement or list of the problem(s) themselves.
+- Interpret word problems and diagrams, but still solve exactly one self-contained question.
 
 Show clear, numbered step-by-step working a student could follow and learn from — don't skip algebraic steps. Use plain text math notation (x^2, sqrt(x), pi, /, *) rather than LaTeX.
 
 Respond with ONLY a single JSON object, no markdown code fences, no commentary before or after it, matching exactly this shape:
 {
-  "problem": "the problem exactly as written/transcribed from the image",
+  "problem": "the ONE problem you are solving, exactly as written/transcribed from the image",
   "topic": "e.g. Quadratic Equations, Geometry - Circle, Word Problem - Rates",
   "explanation": "one or two sentences describing the approach",
   "steps": ["step 1", "step 2", "..."],
   "finalAnswer": "the final answer, concise"
 }
 
-If the image does not contain a legible, solvable math problem, respond with ONLY this JSON object instead:
+If the image does not contain any legible, solvable math problem at all, respond with ONLY this JSON object instead:
 { "error": "short explanation of what's wrong" }`;
 
 function corsHeaders(): HeadersInit {
