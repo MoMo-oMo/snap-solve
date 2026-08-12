@@ -32,7 +32,12 @@ interface SolveResult {
   finalAnswer: string;
 }
 
-const DEFAULT_MODEL = '@cf/meta/llama-3.2-11b-vision-instruct';
+// Llama 4 Scout: newer, meaningfully stronger than 3.2-11b-vision at both
+// reading and reasoning, same free Workers AI infra, same image_url format.
+// It's a bigger model though, so it'll burn through the daily free quota
+// faster per request — still $0 per request either way, just fewer of them
+// per day before falling back to the on-device solver.
+const DEFAULT_MODEL = '@cf/meta/llama-4-scout-17b-16e-instruct';
 
 const PROMPT = `You are a patient, precise math tutor. The attached image is a photo taken by a student of ONE math problem they want solved — it may be printed, handwritten, low quality, or a diagram with labeled values (e.g. a triangle with side lengths marked).
 
