@@ -11,8 +11,8 @@ export async function detectMath(imageBase64: string): Promise<string> {
   // workerPath/corePath point at self-hosted copies (public/tesseract) instead of
   // tesseract.js's CDN defaults, so scanning still works on locked-down/offline networks.
   const worker = await createWorker('eng', OEM.LSTM_ONLY, {
-    workerPath: '/tesseract/worker.min.js',
-    corePath: '/tesseract/core',
+    workerPath: `${import.meta.env.BASE_URL}tesseract/worker.min.js`,
+    corePath: `${import.meta.env.BASE_URL}tesseract/core`,
   });
   try {
     const { data: { text } } = await worker.recognize(src);

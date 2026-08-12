@@ -6,6 +6,8 @@ import { defineConfig } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  // GitHub Pages serves project pages from /<repo-name>/, not the domain root.
+  base: process.env.NODE_ENV === 'production' ? '/snap-solve/' : '/',
   plugins: [
     vue(),
   ],
