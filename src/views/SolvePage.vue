@@ -192,7 +192,7 @@ import StepList from '@/components/StepList.vue';
 import CameraCapture from '@/components/CameraCapture.vue';
 import ThemeToggle from '@/components/ThemeToggle.vue';
 import TopicSelector from '@/components/TopicSelector.vue';
-import { detectMath } from '@/services/ocrService';
+import { detectMath, looksLikeGarbage } from '@/services/ocrService';
 import { solveProblem, type SolveResult, type TopicHint } from '@/services/mathSolver';
 import { solveFromImageAI, isAiSolveConfigured } from '@/services/aiSolveService';
 
@@ -263,6 +263,11 @@ async function handlePhoto(rawBase64: string): Promise<void> {
     const trimmed = detected.trim();
     if (!trimmed) {
       errorMessage.value = 'No text detected in the photo. Try a clearer image or type the problem below.';
+      stage.value = 'idle';
+      return;
+    }
+    if (looksLikeGarbage(trimmed)) {
+      errorMessage.value = 'Could not read that clearly. Make sure the photo shows just the problem, then try again — or type it in below.';
       stage.value = 'idle';
       return;
     }
