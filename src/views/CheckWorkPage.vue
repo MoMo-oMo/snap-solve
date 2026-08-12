@@ -228,6 +228,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 import TopicSelector from '@/components/TopicSelector.vue';
 import { detectMath } from '@/services/ocrService';
 import { solveProblem, answersMatch, type SolveResult, type TopicHint } from '@/services/mathSolver';
+import { solveFromImageAI, isAiSolveConfigured } from '@/services/aiSolveService';
 
 type Stage = 'idle' | 'scanning' | 'confirming' | 'checking' | 'done';
 
@@ -247,6 +248,10 @@ const studentAnswer = ref('');
 const studentWork = ref('');
 const checkResult = ref<CheckResult | null>(null);
 const topicHint = ref<TopicHint>('auto');
+// Populated when the AI proxy successfully reads+solves a photographed
+// problem. Reused in checkAnswer() instead of re-solving locally, as long as
+// the student hasn't edited the transcribed problem text.
+const aiSolution = ref<SolveResult | null>(null);
 
 function reset(): void {
   stage.value = 'idle';
@@ -258,11 +263,13 @@ function reset(): void {
   studentWork.value = '';
   checkResult.value = null;
   topicHint.value = 'auto';
+  aiSolution.value = null;
 }
 
 function confirmManual(): void {
   if (!manualProblem.value.trim()) return;
   editableProblem.value = manualProblem.value.trim();
+  aiSolution.value = null;
   stage.value = 'confirming';
 }
 
@@ -299,6 +306,24 @@ async function pickGalleryNative(): Promise<void> {
 async function handlePhoto(rawBase64: string): Promise<void> {
   stage.value = 'scanning';
   errorMessage.value = '';
+  aiSolution.value = null;
+
+  // AI path first: reads + solves in one call, handles handwriting/diagrams/
+  // word problems the on-device OCR + rule-based solver can't. The AI's
+  // solution is cached and reused in checkAnswer() below (skipping a second
+  // solve) unless the student edits the transcribed problem text.
+  if (isAiSolveConfigured()) {
+    try {
+      const result = await solveFromImageAI(rawBase64);
+      aiSolution.value = result;
+      editableProblem.value = result.problem;
+      stage.value = 'confirming';
+      return;
+    } catch {
+      /* fall through to on-device OCR */
+    }
+  }
+
   try {
     const detected = await detectMath(rawBase64);
     const trimmed = detected.trim();
@@ -325,7 +350,8 @@ function checkAnswer(): void {
 
   setTimeout(() => {
     try {
-      const solution = solveProblem(problem, topicHint.value);
+      const reuseAiSolution = aiSolution.value && aiSolution.value.problem.trim() === problem;
+      const solution = reuseAiSolution ? aiSolution.value! : solveProblem(problem, topicHint.value);
       const isCorrect = answersMatch(answer, solution.finalAnswer);
 
       let feedback: string;

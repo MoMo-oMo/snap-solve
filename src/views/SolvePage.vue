@@ -194,6 +194,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue';
 import TopicSelector from '@/components/TopicSelector.vue';
 import { detectMath } from '@/services/ocrService';
 import { solveProblem, type SolveResult, type TopicHint } from '@/services/mathSolver';
+import { solveFromImageAI, isAiSolveConfigured } from '@/services/aiSolveService';
 
 type Stage = 'idle' | 'camera' | 'scanning' | 'confirming' | 'solving' | 'done';
 
@@ -242,6 +243,21 @@ async function captureNative(): Promise<void> {
 async function handlePhoto(rawBase64: string): Promise<void> {
   stage.value = 'scanning';
   errorMessage.value = '';
+
+  // AI path first: reads + solves in one call, handles handwriting/diagrams/
+  // word problems the on-device OCR + rule-based solver can't. Falls through
+  // to the on-device pipeline below on any failure (not configured, offline,
+  // rate-limited, unreadable image) so the app never hard-fails here.
+  if (isAiSolveConfigured()) {
+    try {
+      solution.value = await solveFromImageAI(rawBase64);
+      stage.value = 'done';
+      return;
+    } catch {
+      /* fall through to on-device OCR + rule-based solver */
+    }
+  }
+
   try {
     const detected = await detectMath(rawBase64);
     const trimmed = detected.trim();

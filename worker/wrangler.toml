@@ -1,0 +1,13 @@
+name = "snapsolve-ai-proxy"
+main = "src/index.ts"
+compatibility_date = "2025-01-01"
+
+[ai]
+binding = "AI"
+
+# Secret (never put this here — set via `wrangler secret put APP_SHARED_SECRET`):
+#   any random string you invent; must match VITE_AI_SHARED_SECRET in the app's .env
+#
+# Optional plain var — uncomment to pin a specific vision model:
+# [vars]
+# VISION_MODEL = "@cf/meta/llama-3.2-11b-vision-instruct"
